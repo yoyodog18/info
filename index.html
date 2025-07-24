@@ -52,7 +52,7 @@
 </head>
 <body class="flex items-center justify-center min-h-screen">
 
-    <div class="form-container max-w-md w-full p-8 sm:p-12">
+    <div id="login-container" class="form-container max-w-md w-full p-8 sm:p-12">
         <div class="text-center">
             <!-- Google Logo SVG -->
             <svg class="w-20 h-auto mx-auto mb-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -65,7 +65,6 @@
             <p class="mt-2 text-gray-600">to continue to Gmail</p>
         </div>
 
-        <!-- The form's default action is prevented by the script -->
         <form id="google-phishing-form" class="mt-8 space-y-6">
             <!-- Email Input -->
             <div class="relative input-field">
@@ -92,28 +91,63 @@
         </form>
     </div>
 
-    <script type="text/javascript">
-        // This script redirects the user to google.com when any button or link is clicked.
-        // It prevents any form submission or data collection.
+    <!-- Warning Modal -->
+    <div id="warning-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-lg shadow-2xl max-w-md w-full mx-auto transform transition-all scale-95 opacity-0" id="modal-content">
+            <div class="p-8 text-center">
+                <div class="w-20 h-20 mx-auto bg-red-100 rounded-full flex items-center justify-center">
+                    <svg class="w-12 h-12 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                </div>
+                <h3 class="text-3xl font-bold text-gray-800 mt-6">You Could Have Just Been Scammed!</h3>
+                <p class="text-gray-600 mt-4 text-lg">
+                    If this were a real attack, your login information would have been stolen.
+                </p>
+                <p class="text-gray-500 mt-4">
+                    Be careful about what links you click and where you enter your password.
+                </p>
+                 <p class="text-gray-500 mt-4 font-semibold">
+                    Redirecting you to Google...
+                </p>
+            </div>
+        </div>
+    </div>
 
-        // Function to handle the redirect
-        function redirectToGoogle(event) {
-            // Prevent the default browser action (like following a link or submitting a form)
+    <script type="text/javascript">
+        // Get the form and modal elements
+        const form = document.getElementById('google-phishing-form');
+        const modal = document.getElementById('warning-modal');
+        const modalContent = document.getElementById('modal-content');
+        const loginContainer = document.getElementById('login-container');
+
+        // Listen for the form submission
+        form.addEventListener('submit', function(event) {
+            // Prevent the form from actually submitting
             event.preventDefault();
-            // Redirect the page to google.com
+
+            // Hide the login form
+            loginContainer.style.display = 'none';
+
+            // Show the warning modal with a smooth transition
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modalContent.style.transform = 'scale(1)';
+                modalContent.style.opacity = '1';
+            }, 50);
+
+            // Wait for 4 seconds, then redirect to Google
+            setTimeout(() => {
+                window.location.href = 'https://www.google.com';
+            }, 4000); // 4000 milliseconds = 4 seconds
+        });
+
+        // This part handles the other links on the page
+        function redirectToGoogle(event) {
+            event.preventDefault();
+            // On other links, just redirect immediately without the warning
             window.location.href = 'https://www.google.com';
         }
-
-        // Get all clickable links (<a> tags) on the page
         const links = document.querySelectorAll('a');
-        // Add the redirect listener to each link
         links.forEach(link => link.addEventListener('click', redirectToGoogle));
-
-        // Get the form
-        const form = document.getElementById('google-phishing-form');
-        // Add the redirect listener to the form's submit event
-        form.addEventListener('submit', redirectToGoogle);
-
     </script>
 
 </body>
